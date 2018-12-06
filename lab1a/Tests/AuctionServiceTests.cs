@@ -39,5 +39,13 @@ namespace Tests
             var sut = new AuctionService(repo, userRepo);
             Assert.Throws<Exception>(()=>sut.CreateAuction(testUserName, DateTime.UtcNow.AddDays(2)));
         }
+
+
+        [Fact]
+        public void Test_Auction_Can_Be_Start(){
+            var repo = new AuctionRepository();
+            var sut = new AuctionService(repo);
+            sut.CreateAuction(testUserName, DateTime.UtcNow.AddDays(-2));
+        }
     }
 }

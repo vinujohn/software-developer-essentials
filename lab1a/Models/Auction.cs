@@ -9,5 +9,6 @@ namespace Models
 
         public DateTime? StartedOn {get; set;}
         public DateTime? EndedOn {get; set;}
+        public Bid HighestBid { get; set; }
     }
 }
