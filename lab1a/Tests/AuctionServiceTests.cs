@@ -51,11 +51,12 @@ namespace Tests
             var repo = new AuctionRepository();
             var sut = new AuctionService(repo, userRepo);
 
-            var currAuction = sut.CreateAuction(testUserName, DateTime.UtcNow.AddDays(1));
+            var auctionId = sut.CreateAuction(testUserName, DateTime.UtcNow.AddDays(1));
             
-            var vvv = repo.FindAuctionById(currAuction);
+            var auction = repo.FindAuctionById(auctionId);
             var myBid = new Bid{amount=1.75, bidder="Joe", User=user};
-            Assert.True(myBid.amount > vvv.HighestBid.amount);
+            sut.CreateBid(auctionId, 10.0, )
+            Assert.True(myBid.amount > auction.HighestBid.amount);
         // public double amount { get; set; }
         // public string bidder { get; set; }
         // public User User { get; set; }

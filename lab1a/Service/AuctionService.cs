@@ -51,6 +51,8 @@ namespace Service
             }
             auction.EndedOn = DateTime.UtcNow;
             _repository.Save(auction);
+        }
+        
         public bool CreateBid(string auctionID, double bidAmount, string bidderUserName){
             // auction must be started
             // if 1st can be equal or greater than price
