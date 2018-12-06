@@ -23,7 +23,7 @@ namespace Repository
 
         public void SetLogin(User foundUser, bool value)
         {
-            foundUser.IsLoggedIn = true;
+            foundUser.IsLoggedIn = value;
         }
     }
 }

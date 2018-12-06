@@ -6,7 +6,7 @@ using Models;
 
 namespace Tests
 {
-    public class UserTests
+    public class UserServiceTests
     {
         User testUser = new User{
             FirstName = "John",
@@ -19,7 +19,7 @@ namespace Tests
         IUsersRepository testRepository;
         UserService sut;
 
-        public UserTests(){
+        public UserServiceTests(){
             testRepository = new UsersRepository();
             sut = new UserService(testRepository);
         }
@@ -64,6 +64,17 @@ namespace Tests
         {                
             Assert.Null(testRepository.FindUserByUserName(testUser.UserName));
             Assert.False(sut.LogIn(testUser.UserName, testUser.Password));
+        }
+
+        [Fact]
+        public void Test_User_LogOut_Successful()
+        {            
+            sut.RegisterUser(testUser.FirstName, testUser.LastName, testUser.Email, testUser.UserName, testUser.Password);
+            sut.LogIn(testUser.UserName, testUser.Password);
+            Assert.True(testRepository.FindUserByUserName(testUser.UserName).IsLoggedIn);
+            sut.LogOut(testUser.UserName);
+
+            Assert.False(testRepository.FindUserByUserName(testUser.UserName).IsLoggedIn);
         }
     }
 }

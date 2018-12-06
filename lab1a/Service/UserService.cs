@@ -29,5 +29,12 @@ namespace Service
             }
             return false;
         }
+
+        public void LogOut(string userName){
+            var foundUser = _repository.FindUserByUserName(userName);
+            if (foundUser != null){
+                _repository.SetLogin(foundUser, false);
+            }
+        }
     }
 }
