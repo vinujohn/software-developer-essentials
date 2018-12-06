@@ -42,10 +42,25 @@ namespace Tests
 
 
         [Fact]
-        public void Test_Auction_Can_Be_Start(){
+        public void Test_Auction_Can_Accept_Bid(){
+            var user = new User(){UserName = testUserName};
+            var userRepo = new UsersRepository();
+            userRepo.Add(user);
+            userRepo.SetLogin(user, true);
+
             var repo = new AuctionRepository();
-            var sut = new AuctionService(repo);
-            sut.CreateAuction(testUserName, DateTime.UtcNow.AddDays(-2));
+            var sut = new AuctionService(repo, userRepo);
+
+            var currAuction = sut.CreateAuction(testUserName, DateTime.UtcNow.AddDays(1));
+            
+            var vvv = repo.FindAuctionById(currAuction);
+            var myBid = new Bid{amount=1.75, bidder="Joe", User=user};
+            Assert.True(myBid.amount > vvv.HighestBid.amount);
+        // public double amount { get; set; }
+        // public string bidder { get; set; }
+        // public User User { get; set; }
+
+
         }
     }
 }
