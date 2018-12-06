@@ -6,7 +6,7 @@ using Models;
 
 namespace Tests
 {
-    public class UserRegistrationTests
+    public class UserTests
     {
         User testUser = new User{
             FirstName = "John",
@@ -19,7 +19,7 @@ namespace Tests
         IUsersRepository testRepository;
         UserService sut;
 
-        public UserRegistrationTests(){
+        public UserTests(){
             testRepository = new UsersRepository();
             sut = new UserService(testRepository);
         }
@@ -30,7 +30,13 @@ namespace Tests
             Assert.Null(testRepository.FindUserByUserName(testUser.UserName));
             sut.RegisterUser(testUser.FirstName, testUser.LastName, testUser.Email, testUser.UserName, testUser.Password);
             
-            Assert.NotNull(testRepository.FindUserByUserName(testUser.UserName));
+            var foundUser = testRepository.FindUserByUserName(testUser.UserName);
+            Assert.NotNull(foundUser);
+            Assert.Equal(testUser.FirstName, foundUser.FirstName);
+            Assert.Equal(testUser.LastName, foundUser.LastName);
+            Assert.Equal(testUser.Email, foundUser.Email);
+            Assert.Equal(testUser.UserName, foundUser.UserName);
+            Assert.Equal(testUser.Password, foundUser.Password);
         }
 
         [Fact]
@@ -41,6 +47,23 @@ namespace Tests
             sut.LogIn(testUser.UserName, testUser.Password);
 
             Assert.True(testRepository.FindUserByUserName(testUser.UserName).IsLoggedIn);
+        }
+
+        [Fact]
+        public void Test_User_LogIn_Failed_Bad_Password()
+        {            
+            sut.RegisterUser(testUser.FirstName, testUser.LastName, testUser.Email, testUser.UserName, testUser.Password);
+            Assert.False(testRepository.FindUserByUserName(testUser.UserName).IsLoggedIn);
+            
+            Assert.False(sut.LogIn(testUser.UserName, "I am a bad password"));
+            Assert.False(testRepository.FindUserByUserName(testUser.UserName).IsLoggedIn);
+        }
+
+        [Fact]
+        public void Test_User_LogIn_Failed_User_Not_Registered()
+        {                
+            Assert.Null(testRepository.FindUserByUserName(testUser.UserName));
+            Assert.False(sut.LogIn(testUser.UserName, testUser.Password));
         }
     }
 }
