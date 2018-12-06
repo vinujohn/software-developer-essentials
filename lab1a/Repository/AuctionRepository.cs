@@ -20,5 +20,10 @@ namespace Repository
         public Auction FindAuctionById(string auctionId) {
             return _auctions.FirstOrDefault(x => x.Id == auctionId);
         }
+
+        public void Save(Auction auction)
+        {
+            // noop
+        }
     }
 }

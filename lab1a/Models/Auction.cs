@@ -6,5 +6,8 @@ namespace Models
         public string Id { get; set; }
         public User Seller { get; set; }
         public DateTime StartTime { get; set; }
+
+        public DateTime? StartedOn {get; set;}
+        public DateTime? EndedOn {get; set;}
     }
 }

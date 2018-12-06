@@ -34,5 +34,23 @@ namespace Service
 
             return auction.Id;
         }
+
+        public void Start(string auctionId){
+            var auction = _repository.FindAuctionById(auctionId);
+            if (auction == null){
+                throw new ArgumentException("could not find auction");
+            }
+            auction.StartedOn = DateTime.UtcNow;
+            _repository.Save(auction);
+        }
+
+        public void Stop(string auctionId){
+            var auction = _repository.FindAuctionById(auctionId);
+            if (auction == null){
+                throw new ArgumentException("could not find auction");
+            }
+            auction.EndedOn = DateTime.UtcNow;
+            _repository.Save(auction);
+        }
     }
 }
